@@ -37,11 +37,9 @@ final class StorageManager {
         }
     }
     
-    func saveTask() -> Task? {
-        guard let entityDescription = NSEntityDescription.entity(forEntityName: "Task", in: persistentContainer.viewContext) else {
-            return nil
-        }
-        let task = Task(entity: entityDescription, insertInto: persistentContainer.viewContext)
+    // MARK: - CRUD Methods
+    func saveTask() -> Task {
+        let task = Task(context: persistentContainer.viewContext)
         return task
     }
     
