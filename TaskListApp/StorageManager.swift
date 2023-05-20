@@ -46,7 +46,7 @@ final class StorageManager {
     }
     
     func fetchData() -> [Task] {
-        let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
+        let fetchRequest = Task.fetchRequest()
         
         do {
             let data = try persistentContainer.viewContext.fetch(fetchRequest)
