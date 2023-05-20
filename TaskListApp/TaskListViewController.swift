@@ -34,7 +34,7 @@ final class TaskListViewController: UITableViewController {
         cell.contentConfiguration = content
         return cell
     }
-
+    
     @objc private func addNewTask() {
         showAlert(withTitle: "New Task", andMessage: "What do you want to do?")
     }
@@ -64,6 +64,16 @@ final class TaskListViewController: UITableViewController {
         
         storageManager.saveContext()
         dismiss(animated: true)
+    }
+    
+    // MARK: - UITableViewDelegate
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let task = taskList[indexPath.row]
+            taskList.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            storageManager.deleteTask(task)
+        }
     }
 }
 
