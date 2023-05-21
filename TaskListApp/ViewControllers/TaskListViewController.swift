@@ -33,7 +33,7 @@ final class TaskListViewController: UITableViewController {
         var content = cell.defaultContentConfiguration()
         content.text = task.title
         cell.contentConfiguration = content
-    
+        
         let editButton = UIButton(type: .system)
         editButton.setImage(UIImage(systemName: "pencil"), for: .normal)
         editButton.addTarget(self, action: #selector(editButtonTapped(_:)), for: .touchUpInside)
@@ -47,11 +47,22 @@ final class TaskListViewController: UITableViewController {
         return cell
     }
     
+    // MARK: - UITableViewDelegate
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let task = taskList[indexPath.row]
+            taskList.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            storageManager.delete(task: task)
+        }
+    }
+    
+    // MARK: - Private methods
     @objc private func addNewTask() {
         showAlert(withTitle: "New Task", andMessage: "What do you want to do?")
     }
     
-    @objc func editButtonTapped(_ sender: UIButton) {
+    @objc private func editButtonTapped(_ sender: UIButton) {
         editButtonTag = sender.tag
         showAlert(withTitle: "Edit Task", andMessage: "Enter new task name")
     }
@@ -89,16 +100,6 @@ final class TaskListViewController: UITableViewController {
         
         storageManager.saveContext()
         dismiss(animated: true)
-    }
-    
-    // MARK: - UITableViewDelegate
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            let task = taskList[indexPath.row]
-            taskList.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-            storageManager.delete(task: task)
-        }
     }
 }
 
