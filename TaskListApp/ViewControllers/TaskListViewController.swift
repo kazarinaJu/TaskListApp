@@ -12,6 +12,7 @@ final class TaskListViewController: UITableViewController {
     
     private var taskList: [Task] = []
     private let cellID = "cell"
+    private var editButtonTag: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +33,17 @@ final class TaskListViewController: UITableViewController {
         var content = cell.defaultContentConfiguration()
         content.text = task.title
         cell.contentConfiguration = content
+    
+        let editButton = UIButton(type: .system)
+        editButton.setImage(UIImage(systemName: "pencil"), for: .normal)
+        editButton.addTarget(self, action: #selector(editButtonTapped(_:)), for: .touchUpInside)
+        editButton.tag = indexPath.row
+        
+        editButton.translatesAutoresizingMaskIntoConstraints = false
+        cell.contentView.addSubview(editButton)
+        editButton.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor).isActive = true
+        editButton.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -16).isActive = true
+        
         return cell
     }
     
@@ -39,12 +51,25 @@ final class TaskListViewController: UITableViewController {
         showAlert(withTitle: "New Task", andMessage: "What do you want to do?")
     }
     
+    @objc func editButtonTapped(_ sender: UIButton) {
+        editButtonTag = sender.tag
+        showAlert(withTitle: "Edit Task", andMessage: "Enter new task name")
+    }
+    
     private func showAlert(withTitle title: String, andMessage message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let saveAction = UIAlertAction(title: "Save Task", style: .default) { [unowned self] _ in
             guard let task = alert.textFields?.first?.text, !task.isEmpty else { return }
-            save(task)
+            
+            if let index = self.editButtonTag {
+                let updatedTask = self.taskList[index]
+                self.storageManager.update(task: updatedTask, withTitle: task)
+                self.tableView.reloadData()
+            } else {
+                self.save(task)
+            }
         }
+        
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
         alert.addAction(saveAction)
         alert.addAction(cancelAction)
