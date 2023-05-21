@@ -118,7 +118,7 @@ private extension TaskListViewController {
         navigationController?.navigationBar.tintColor = .white
     }
     
-    private func createEditButton(_ indexPath: IndexPath, _ cell: UITableViewCell) {
+    func createEditButton(_ indexPath: IndexPath, _ cell: UITableViewCell) {
         let editButton = UIButton(type: .system)
         editButton.setImage(UIImage(systemName: "pencil"), for: .normal)
         editButton.addTarget(self, action: #selector(editButtonTapped(_:)), for: .touchUpInside)
