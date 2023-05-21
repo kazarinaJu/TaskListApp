@@ -38,7 +38,7 @@ final class StorageManager {
     }
     
     // MARK: - CRUD Methods
-    func saveTask() -> Task {
+    func save() -> Task {
         let task = Task(context: persistentContainer.viewContext)
         return task
     }
@@ -55,12 +55,12 @@ final class StorageManager {
         }
     }
     
-    func updateTask() {
+    func update(task: Task) {
         saveContext()
     }
     
-    func deleteTask(_ managedObject: Task) {
-        persistentContainer.viewContext.delete(managedObject)
+    func delete(task: Task) {
+        persistentContainer.viewContext.delete(task)
         saveContext()
     }
 }
