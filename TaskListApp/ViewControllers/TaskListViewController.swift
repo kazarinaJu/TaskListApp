@@ -33,16 +33,7 @@ final class TaskListViewController: UITableViewController {
         var content = cell.defaultContentConfiguration()
         content.text = task.title
         cell.contentConfiguration = content
-        
-        let editButton = UIButton(type: .system)
-        editButton.setImage(UIImage(systemName: "pencil"), for: .normal)
-        editButton.addTarget(self, action: #selector(editButtonTapped(_:)), for: .touchUpInside)
-        editButton.tag = indexPath.row
-        
-        editButton.translatesAutoresizingMaskIntoConstraints = false
-        cell.contentView.addSubview(editButton)
-        editButton.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor).isActive = true
-        editButton.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -16).isActive = true
+        createEditButton(indexPath, cell)
         
         return cell
     }
@@ -125,5 +116,17 @@ private extension TaskListViewController {
             action: #selector(addNewTask)
         )
         navigationController?.navigationBar.tintColor = .white
+    }
+    
+    private func createEditButton(_ indexPath: IndexPath, _ cell: UITableViewCell) {
+        let editButton = UIButton(type: .system)
+        editButton.setImage(UIImage(systemName: "pencil"), for: .normal)
+        editButton.addTarget(self, action: #selector(editButtonTapped(_:)), for: .touchUpInside)
+        editButton.tag = indexPath.row
+        
+        editButton.translatesAutoresizingMaskIntoConstraints = false
+        cell.contentView.addSubview(editButton)
+        editButton.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor).isActive = true
+        editButton.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -16).isActive = true
     }
 }
