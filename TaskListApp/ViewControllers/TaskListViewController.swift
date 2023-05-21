@@ -74,10 +74,10 @@ final class TaskListViewController: UITableViewController {
             
             if let index = self.editButtonTag {
                 let updatedTask = self.taskList[index]
-                self.storageManager.update(task: updatedTask, withTitle: task)
-                self.tableView.reloadData()
+                storageManager.update(task: updatedTask, withTitle: task)
+                tableView.reloadData()
             } else {
-                self.save(task)
+                save(task)
             }
         }
         
